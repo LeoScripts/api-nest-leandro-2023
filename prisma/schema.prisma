@@ -37,8 +37,8 @@ model Customer {
 model Billing {
   id          String    @id @default(uuid()) @db.VarChar(36)
   description String    @db.VarChar(255)
-  status      String    @unique @db.VarChar(255)
-  value       Decimal   @unique @db.Decimal(10, 2)
+  status      String    @db.VarChar(255)
+  value       Decimal   @db.Decimal(10, 2)
   dueDate     DateTime  @db.Date
   customer    Customer  @relation(fields: [customerId], references: [id])
   customerId  String    @db.VarChar(36)
