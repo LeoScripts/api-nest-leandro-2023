@@ -35,4 +35,19 @@ export class BillingService {
       return new BadRequestException(error.message);
     }
   }
+
+  async findOneById(id: string) {
+    return await this.prismaService.billing.findFirstOrThrow({
+      select: {
+        id: true,
+        description: true,
+        status: true,
+        value: true,
+        dueDate: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      where: { id, deletedAt: null },
+    });
+  }
 }
