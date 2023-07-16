@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateBillingDto } from './dto/create-billing.dto';
 import { BillingStatusEnum } from './enum/billing-status.enum';
+import { UpdateBillingDto } from './dto/update-billing.dto';
 
 @Injectable()
 export class BillingService {
@@ -48,6 +49,14 @@ export class BillingService {
         updatedAt: true,
       },
       where: { id, deletedAt: null },
+    });
+  }
+
+  async updateById(id: string, data: UpdateBillingDto) {
+    await this.findOneById(id);
+    return await this.prismaService.billing.update({
+      where: { id },
+      data: { ...data, updatedAt: new Date() },
     });
   }
 }

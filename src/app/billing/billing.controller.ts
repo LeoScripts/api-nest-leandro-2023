@@ -5,9 +5,11 @@ import {
   Post,
   Param,
   ParseUUIDPipe,
+  Patch,
 } from '@nestjs/common';
 import { BillingService } from './billing.service';
 import { CreateBillingDto } from './dto/create-billing.dto';
+import { UpdateBillingDto } from './dto/update-billing.dto';
 
 @Controller('api/v1/billings')
 export class BillingController {
@@ -27,5 +29,13 @@ export class BillingController {
   @Get(':id')
   async findOneById(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.billingService.findOneById(id);
+  }
+
+  @Patch(':id')
+  async updateById(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() body: UpdateBillingDto,
+  ) {
+    return this.billingService.updateById(id, body);
   }
 }
