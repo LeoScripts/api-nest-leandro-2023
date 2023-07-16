@@ -4,6 +4,7 @@ import { CreateBillingDto } from './dto/create-billing.dto';
 import { BillingStatusEnum } from './enum/billing-status.enum';
 import { UpdateBillingDto } from './dto/update-billing.dto';
 import { DateTime } from 'luxon';
+import { billingStatus } from '../helpers/billing-status.helper';
 
 @Injectable()
 export class BillingService {
@@ -22,18 +23,14 @@ export class BillingService {
       status: billing.status,
     }));
 
-    // melhorar fazendo uma interação
-    const pending = history
-      .filter(({ status }) => status === BillingStatusEnum.PENDING)
-      .reduce((total, current) => (total += current.value), 0);
+    // melhorar isso depois
+    // const pending = history
+    //   .filter(({ status }) => status === BillingStatusEnum.PENDING)
+    //   .reduce((total, current) => (total += current.value), 0);
 
-    const late = history
-      .filter(({ status }) => status === BillingStatusEnum.LATE)
-      .reduce((total, current) => (total += current.value), 0);
-
-    const paid = history
-      .filter(({ status }) => status === BillingStatusEnum.PAID)
-      .reduce((total, current) => (total += current.value), 0);
+    const pending = billingStatus(history, BillingStatusEnum.PENDING);
+    const late = billingStatus(history, BillingStatusEnum.LATE);
+    const paid = billingStatus(history, BillingStatusEnum.PAID);
 
     const customers = await this.prismaService.customer.count({
       where: { deletedAt: null },
