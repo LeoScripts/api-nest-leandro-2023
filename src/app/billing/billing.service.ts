@@ -59,4 +59,12 @@ export class BillingService {
       data: { ...data, updatedAt: new Date() },
     });
   }
+
+  async deleteById(id: string) {
+    await this.findOneById(id);
+    await this.prismaService.billing.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+  }
 }

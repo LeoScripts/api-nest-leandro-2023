@@ -6,6 +6,7 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { BillingService } from './billing.service';
 import { CreateBillingDto } from './dto/create-billing.dto';
@@ -37,5 +38,10 @@ export class BillingController {
     @Body() body: UpdateBillingDto,
   ) {
     return this.billingService.updateById(id, body);
+  }
+
+  @Delete(':id')
+  async deleteById(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.billingService.deleteById(id);
   }
 }
