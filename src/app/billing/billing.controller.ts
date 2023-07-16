@@ -16,6 +16,11 @@ import { UpdateBillingDto } from './dto/update-billing.dto';
 export class BillingController {
   constructor(private readonly billingService: BillingService) {}
 
+  @Get('dashboard')
+  async dashboard() {
+    return this.billingService.dashboard();
+  }
+
   @Get()
   async findAll() {
     return this.billingService.findAll();
