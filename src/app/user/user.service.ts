@@ -6,7 +6,7 @@ import {
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UpdateUserDto } from './dto/update-user-dto';
-import { genSaltSync, hashSync } from 'bcrypt';
+import { compareSync, genSaltSync, hashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -51,6 +51,23 @@ export class UserService {
     }
   }
 
+  async findOneByEmail(email: string) {
+    try {
+      return await this.prismaService.user.findFirstOrThrow({
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          password: true,
+        },
+        where: { email, deletedAt: null },
+      });
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
   async updateById(id: string, data: UpdateUserDto) {
     try {
       await this.findOneById(id);
@@ -74,5 +91,9 @@ export class UserService {
   hashPassword(password: string) {
     const salt = genSaltSync(10);
     return hashSync(password, salt);
+  }
+
+  validadePassword(password: string, hash: string) {
+    return compareSync(password, hash);
   }
 }

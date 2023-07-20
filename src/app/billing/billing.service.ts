@@ -23,7 +23,7 @@ export class BillingService {
       status: billing.status,
     }));
 
-    // melhorar isso depois
+    // melhorei essa estrutura que estava se repetindo 3x
     // const pending = history
     //   .filter(({ status }) => status === BillingStatusEnum.PENDING)
     //   .reduce((total, current) => (total += current.value), 0);
